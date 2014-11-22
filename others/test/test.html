@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<script src="../../js/libs/three.min.js"></script>
+<script>
+    //方向点
+    var p1 = {x : 0, y : 0};
+    var p2 = {x : -1, y : 0};
+    var p3 = {x : 0, y : 0};
+    var p4 = {x : 1, y : 0};
+    //向量
+    var v1 = new THREE.Vector2(p2.x - p1.x, p2.y - p1.y);
+    var v2 = new THREE.Vector2(p4.x - p3.x, p4.y - p3.y);
+    /**
+    求向量 p1->p2, p3->p4 间的cos_theta,以此为依据判断角是否小于90°
+    */
+    function isCorrectDirection(p1, p2, p3, p4) {
+        var x1 = p2.x - p1.x;
+        var y1 = p2.y - p1.y;
+        var x2 = p4.x - p3.x;
+        var y2 = p4.y - p3.y;
+        var cos_theta = (x1*x2 + y1*y2) / (Math.pow((x1*x1 + y1*y1), 1/2) * Math.pow((x2*x2 + y2*y2), 1/2));
+        return cos_theta >= 0;
+    }
+
+    //该点是跑道上的方向大致确定,该方法是为了更新car在跑道上的方向判断线段位置
+    var t1 = {x: 500, y:500};
+    var t2 = {x: 500, y:1500};
+    var t3 = {x: 1500, y:1500};
+    var t4 = {x: 1500, y:500};
+    var race_points = [t1, t2, t3, t4];
+    var index = 0;
+    var c1 = {x: 200, y:300};
+    var c2 = {x: 200, y:500};
+    var c3 = {x: 200, y:1600};
+    var c4 = {x: 500, y:1600};
+    var c5 = {x: 1600, y:1600};
+    var c6 = {x: 1600, y:1500};
+    var c7 = {x: 1600, y:500};
+    var c8 = {x: 1600, y:300};
+    var c9 = {x: 1500, y:300};
+    changePoint(c1);
+    console.log(index);//0
+    changePoint(c2);
+    console.log(index);//0
+    changePoint(c3);
+    console.log(index);//0
+    changePoint(c4);
+    console.log(index);//1
+    changePoint(c5);
+    console.log(index);//1
+    changePoint(c6);
+    console.log(index);//2
+    changePoint(c7);
+    console.log(index);//2
+    changePoint(c8);
+    console.log(index);//2
+    changePoint(c9);
+    console.log(index);//3
+    changePoint(c1);
+    console.log(index);//3
+    changePoint(c2);
+    console.log(index);//0
+    changePoint(c3);
+    console.log(index);//0
+    changePoint(c4);
+    console.log(index);//1
+    /**
+     * 判断汽车是否进入下一个或上一个方向区间,注意:方向的直线应该贴近内线
+    */
+    function changePoint(car_pos) {
+        var temp_point_b = race_points[index];
+        var temp_point_f;
+        if(index + 1 == race_points.length)
+            temp_point_f = race_points[0];
+        else
+            temp_point_f = race_points[index+1];
+        if(isChange(temp_point_b, temp_point_f, car_pos)) {
+            index --;
+            if(index < 0)
+                index = race_points.length - 1;
+        }
+        else if(isChange(temp_point_f, temp_point_b, car_pos)) {
+            index++;
+            if(index == race_points.length)
+                index = 0;
+        }
+//        console.log("pb : " + temp_point_b.x + " " + temp_point_b.y);
+//        console.log("pf : " + temp_point_f.x + " " + temp_point_f.y);
+    }
+    /**
+    判断p1->p2,p1->p3间的夹角是否近似180°
+     该方法在赛道中用于辅助判断汽车现在的方向区间
+     */
+    function isChange(p1, p2, p3) {
+        var x1 = p2.x - p1.x;
+        var y1 = p2.y - p1.y;
+        var x2 = p3.x - p1.x;
+        var y2 = p3.y - p1.y;
+        var cos_theta = (x1*x2 + y1*y2) / (Math.pow((x1*x1 + y1*y1), 1/2) * Math.pow((x2*x2 + y2*y2), 1/2));
+        //满足近似180°的角
+        return(cos_theta < -0.9999);
+    }
+
+//    isCorrectDirection(v1, v2);
+//    console.log(cos_theta);
+
+</script>
+</body>
+</html>

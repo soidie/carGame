@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<div id="shopCanvas"></div>
+<script src="../js/libs/three.min.js"></script>
+<script src="../js/libs/OrbitControls.js"></script>
+<script src="../js/libs/Stats.js"></script>
+<script src="Shop.js"></script>
+<script src="../js/mycode/tools.js"></script>
+<script>
+    var p = './shopModel/';
+    var p1 = p + 'audi_car.js';
+    var p2 = p + 'ferrari_car.js';
+    var s = new Shop();
+//    s.showCar(p1);
+    s.showCar(p2);
+    s.start();
+</script>
+</body>
+</html>

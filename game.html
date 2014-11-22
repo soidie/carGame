@@ -1,0 +1,56 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <link href="css/tools.css" type="text/css"/>
+    <script src='js/libs/three.min.js'></script>
+    <script src="js/libs/jquery-1.11.1.js"></script>
+    <script src='js/libs/Car.js'></script>
+    <script src="js/libs/OrbitControls.js"></script>
+    <script src="js/libs/Stats.js"></script>
+    <script src="js/libs/Detector.js"></script>
+    <script src="js/mycode/CarGame.js"></script>
+    <script src="js/mycode/Race.js"></script>
+    <script src="js/mycode/RaceData.js"></script>
+    <script src="js/mycode/tools.js"></script>
+    <script src="js/mycode/CarState.js"></script>
+    <script src="js/mycode/MyCar.js"></script>
+    <title>Game</title>
+</head>
+<body>
+<div id='gameCanvas'></div>
+<div id='game2Canvas'></div>
+<script>
+    initGame();
+//    initMapGame();
+
+    function initGame() {
+        findDimensions();
+        window.onresize = findDimensions;
+        var c1 = new MyCar();
+        c1.appendKeyBoard(87, 83, 65, 68);
+        c1.setCarPosition(200, 5, 200);
+        var player = new CarGame('gameCanvas', winWidth, winHeight);
+        var race_data = new RaceCollection();
+        player.initRace(race_data.getRaceData(race_data.NORMAL_RACE));
+        player.addMyCar(c1);
+        player.start();
+    }
+
+    //普通
+    function initMapGame() {
+        findDimensions();
+        window.onresize = findDimensions;
+        var c1 = new MyCar();
+        c1.appendKeyBoard(87, 83, 65, 68);
+        c1.setCarPosition(200, 0, 1100);
+        var player = new CarGame('gameCanvas', winWidth, winHeight);
+        var race_data = new RaceCollection();
+        player.initRace(race_data.getRaceData(race_data.DIFFICULT_RACE));
+        player.initGlass();
+        player.initSky();
+        player.addMyCar(c1);
+        player.start();
+    }
+</script>
+</body>
+</html>
